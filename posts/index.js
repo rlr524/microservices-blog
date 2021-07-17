@@ -11,7 +11,7 @@ app.use(cors());
 const posts = {};
 
 app.get("/posts", (req, res) => {
-	res.send(posts);
+	res.status(200).json(posts);
 });
 
 app.post("/posts", async (req, res) => {
@@ -34,7 +34,15 @@ app.post("/posts", async (req, res) => {
 		})
 		.catch((err) => console.log(err.message));
 
-	res.status(201).send(posts[id]);
+	res.status(201).json(posts[id]);
+});
+
+app.post("/events", (req, res) => {
+	console.log("Received event", req.body.type);
+
+	res.status("200").json({
+		success: true,
+	});
 });
 
 app.listen(4000, () => {

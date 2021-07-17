@@ -11,7 +11,7 @@ app.use(cors());
 const commentsByPostId = {};
 
 app.get("/posts/:id/comments", (req, res) => {
-	res.status(201).send(commentsByPostId[req.params.id] || []);
+	res.status(200).json(commentsByPostId[req.params.id] || []);
 });
 
 app.post("/posts/:id/comments", async (req, res) => {
@@ -38,9 +38,17 @@ app.post("/posts/:id/comments", async (req, res) => {
 			console.log(err.message);
 		});
 
-	res.status(201).send(comments);
+	res.status(201).json(comments);
 });
 
-app.listen("4001", () => {
+app.post("/events", (req, res) => {
+	console.log("Received event", req.body.type);
+
+	res.status("200").json({
+		success: true,
+	});
+});
+
+app.listen(4001, () => {
 	console.log("Comments service started on port 4001");
 });
