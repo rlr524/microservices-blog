@@ -22,7 +22,7 @@ const CommentCreate = ({ postId }) => {
 					<input
 						value={content}
 						onChange={(e) => setContent(e.target.value)}
-						className="form-control"
+						className="form-control mb-4"
 					></input>
 				</div>
 				<button className="btn btn-primary">Submit</button>

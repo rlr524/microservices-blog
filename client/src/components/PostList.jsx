@@ -7,14 +7,14 @@ const PostList = () => {
 	const [posts, setPosts] = useState({});
 
 	const style = {
-		width: "30%",
+		width: "80%",
 		marginBottom: "20px",
+		alignSelf: "left",
 	};
 
 	const fetchPosts = async () => {
-		const res = await axios.get("http://localhost:4000/posts");
-
-		setPosts(res.data);
+		const res = await axios.get("http://localhost:4002/posts");
+		setPosts(res.data.data);
 	};
 
 	useEffect(() => {
@@ -26,7 +26,7 @@ const PostList = () => {
 			<div className="card" style={style} key={post.id}>
 				<div className="card-body">
 					<h4>{post.title}</h4>
-					<CommentList postId={post.id} />
+					<CommentList comments={post.comments} />
 					<CommentCreate postId={post.id} />
 				</div>
 			</div>

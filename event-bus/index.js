@@ -14,11 +14,11 @@ app.post("/events", async (req, res) => {
 	await axios
 		.post("http://localhost:4001/events", event)
 		.catch((err) => console.log(err.message));
-	// await axios
-	// 	.post("http://localhost:4002/events", event)
-	// 	.catch((err) => console.log(err.message));
+	await axios
+		.post("http://localhost:4002/events", event)
+		.catch((err) => console.log(err.message));
 
-	res.send({ status: "OK" });
+	res.status("200").json({ success: true });
 });
 
 app.listen(4005, () => {
