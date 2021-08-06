@@ -21,24 +21,38 @@ app.post("/posts/:id/comments", async (req, res) => {
 
 	const comments = commentsByPostId[postID] || [];
 
-	comments.push({ id: commentID, content });
+	// Create a new comment
+	comments.push({ id: commentID, content, status: "pending" });
 
 	commentsByPostId[postID] = comments;
 
+	/**
+	 * @event CommentCreated
+	 * @description Emitted to the event bus upon the additon of a new comment to a post's comment array
+	 * @property type: CommentCreated
+	 * @property data.id: commentID
+	 * @property data.content
+	 * @property data.postID: postID
+	 * @property data.status: "", "pending", "approved"
+	 */
 	await axios
 		.post("http://localhost:4005/events", {
 			type: "CommentCreated",
 			data: {
 				id: commentID,
 				content,
-				postId: postID,
+				postID: postID,
+				status: "pending",
 			},
 		})
 		.catch((err) => {
 			console.log(err.message);
 		});
 
-	res.status(201).json(comments);
+	res.status(201).json({
+		success: true,
+		comments,
+	});
 });
 
 app.post("/events", (req, res) => {

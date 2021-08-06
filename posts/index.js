@@ -23,7 +23,13 @@ app.post("/posts", async (req, res) => {
 		title,
 	};
 
-	// Emit the event to the event bus
+	/**
+	 * @event PostCreated
+	 * @description Emitted to the event bus upon the creation of a new post
+	 * @property type: PostCreated
+	 * @property data.id: PostID
+	 * @property: data.title: title
+	 */
 	await axios
 		.post("http://localhost:4005/events", {
 			type: "PostCreated",
@@ -34,7 +40,10 @@ app.post("/posts", async (req, res) => {
 		})
 		.catch((err) => console.log(err.message));
 
-	res.status(201).json(posts[id]);
+	res.status(201).json({
+		success: true,
+		postID: posts[id],
+	});
 });
 
 app.post("/events", (req, res) => {
