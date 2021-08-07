@@ -26,9 +26,9 @@ app.post("/posts", async (req, res) => {
 	/**
 	 * @event PostCreated
 	 * @description Emitted to the event bus upon the creation of a new post
-	 * @property type: PostCreated
-	 * @property data.id: PostID
-	 * @property: data.title: title
+	 * @property type: PostCreated *string
+	 * @property data.id: Postid *string
+	 * @property: data.title: title *string
 	 */
 	await axios
 		.post("http://localhost:4005/events", {
@@ -42,7 +42,7 @@ app.post("/posts", async (req, res) => {
 
 	res.status(201).json({
 		success: true,
-		postID: posts[id],
+		postid: posts[id],
 	});
 });
 

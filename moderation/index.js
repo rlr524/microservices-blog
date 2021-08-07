@@ -20,18 +20,18 @@ app.post("/events", async (req, res) => {
 		/**
 		 * @event CommentModerated
 		 * @description Emitted to the event bus upon the manual or automated moderation of a comment and update of the comment's moderation status
-		 * @property type: CommentModerated
-		 * @property data.id: data.id
-		 * @property data.postID: data.postID
-		 * @property data.status: status
-		 * @property data.content: data.content
+		 * @property type: CommentModerated *string
+		 * @property data.id: data.id *string
+		 * @property data.postid: data.postid *string
+		 * @property data.status: status *string
+		 * @property data.content: data.content *string
 		 */
 		await axios
 			.post("http://localhost:4005/events", {
 				type: "CommentModerated",
 				data: {
 					id: data.id,
-					postID: data.postID,
+					postid: data.postid,
 					status,
 					content: data.content,
 				},

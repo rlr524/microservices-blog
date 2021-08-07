@@ -8,40 +8,40 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-const commentsByPostId = {};
+const commentsByPostid = {};
 
 app.get("/posts/:id/comments", (req, res) => {
-	res.status(200).json(commentsByPostId[req.params.id] || []);
+	res.status(200).json(commentsByPostid[req.params.id] || []);
 });
 
 app.post("/posts/:id/comments", async (req, res) => {
-	const postID = req.params.id;
-	const commentID = randomBytes(4).toString("hex");
+	const postid = req.params.id;
+	const commentid = randomBytes(4).toString("hex");
 	const { content } = req.body;
 
-	const comments = commentsByPostId[postID] || [];
+	const comments = commentsByPostid[postid] || [];
 
 	// Create a new comment
-	comments.push({ id: commentID, content, status: "pending" });
+	comments.push({ id: commentid, content, status: "pending" });
 
-	commentsByPostId[postID] = comments;
+	commentsByPostid[postid] = comments;
 
 	/**
 	 * @event CommentCreated
 	 * @description Emitted to the event bus upon the additon of a new comment to a post's comment array
-	 * @property type: CommentCreated
-	 * @property data.id: commentID
-	 * @property data.content
-	 * @property data.postID: postID
-	 * @property data.status: "", "pending", "approved"
+	 * @property type: CommentCreated *string
+	 * @property data.id: commentid *string
+	 * @property data.content *string
+	 * @property data.postid: postid *string
+	 * @property data.status: "", "pending", "approved" *string
 	 */
 	await axios
 		.post("http://localhost:4005/events", {
 			type: "CommentCreated",
 			data: {
-				id: commentID,
+				id: commentid,
 				content,
-				postID: postID,
+				postid,
 				status: "pending",
 			},
 		})
@@ -55,8 +55,43 @@ app.post("/posts/:id/comments", async (req, res) => {
 	});
 });
 
-app.post("/events", (req, res) => {
+app.post("/events", async (req, res) => {
 	console.log("Received event", req.body.type);
+
+	const { type, data } = req.body;
+
+	if (type === "CommentModerated") {
+		const { postid, id, status, content } = data;
+		const comments = commentsByPostid[postid];
+
+		const comment = comments.find((comment) => {
+			return comment.id === id;
+		});
+		comment.status = status;
+
+		/**
+		 * @event CommentUpdated
+		 * @description Emitted to the event bus upon the update to a comment's status
+		 * @property type: CommentUpdated *string
+		 * @property data.id: id *string
+		 * @property: data.content: content *string
+		 * @property data.postid: postid *string
+		 * @property data.status: status *string
+		 */
+		await axios
+			.post("http://localhost:4005/events", {
+				type: "CommentUpdated",
+				data: {
+					id,
+					content,
+					postid,
+					status,
+				},
+			})
+			.catch((err) => {
+				console.log(err.message);
+			});
+	}
 
 	res.status("200").json({
 		success: true,
