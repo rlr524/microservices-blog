@@ -1,12 +1,11 @@
 apiVersion: v1
 kind: Pod
 metadata:
-    name: microservices-blog-posts
+    name: microservices-blog-query
 spec:
     containers:
-        - name: microservices-blog-posts
-          image: rlr524/microservice-blog-posts:0.0.1
-          imagePullPolicy: Never
+        - name: microservices-blog-query
+          image: microservices-blog-query:0.0.1
           resources:
               limits:
                   memory: "128Mi"
