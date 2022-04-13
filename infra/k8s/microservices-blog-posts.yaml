@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: microservices-blog-posts
+spec:
+    containers:
+        - name: microservices-blog-posts
+          image: rlr524/microservices-blog-posts:0.0.1
+          imagePullPolicy: Never
