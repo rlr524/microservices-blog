@@ -10,7 +10,7 @@
 		"client": "npm run start --prefix ./client",
 		"moderation": "npm run start --prefix ./moderation",
 		"query": "npm run start --prefix ./query",
-		"dev": "concurrently -n \"event-bus,posts,comments,react\" -c \"red,green,yellow,blue,purple,cyan\" \"npm run event-bus\" \"npm run posts\" \"npm run comments\" \"npm run client\" \"npm run moderation\" \"npm run query\"",
+		"dev": "concurrently -n \"event-bus,posts,comments,moderation,query,react\" -c \"red,green,yellow,blue,purple,cyan\" \"npm run event-bus\" \"npm run posts\" \"npm run comments\" \"npm run moderation\" \"npm run query\" \"npm run client\"",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"repository": {
