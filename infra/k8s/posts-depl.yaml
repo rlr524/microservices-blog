@@ -14,10 +14,8 @@ spec:
         spec:
             containers:
                 - name: posts
-                  image: rlr524/microservice-blog-posts:0.0.1
+                  image: rlr524/msb-posts:latest
                   resources:
                       limits:
                           memory: "128Mi"
                           cpu: "500m"
-                  ports:
-                      - containerPort: 4000
