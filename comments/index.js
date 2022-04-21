@@ -4,6 +4,14 @@ const cors = require("cors");
 const express = require("express");
 const { randomBytes } = require("crypto");
 
+let date_ob = new Date();
+let date = ("0" + date_ob.getDate()).slice(-2);
+let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+let year = date_ob.getFullYear();
+let hours = date_ob.getHours();
+let minutes = date_ob.getMinutes();
+let seconds = date_ob.getSeconds();
+
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
@@ -56,7 +64,21 @@ app.post("/posts/:id/comments", async (req, res) => {
 });
 
 app.post("/events", async (req, res) => {
-	console.log("Received event", req.body.type);
+	console.log(
+		`Received event at ${
+			year +
+			"-" +
+			month +
+			"-" +
+			date +
+			" " +
+			hours +
+			":" +
+			minutes +
+			":" +
+			seconds
+		}: ${req.body.type} - PostID: ${req.params.id}`
+	);
 
 	const { type, data } = req.body;
 
