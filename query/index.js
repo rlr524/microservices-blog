@@ -61,7 +61,7 @@ app.listen(4002, async () => {
 	console.log("Query service started on port 4002");
 	try {
 		const res = await axios
-			.get("http://localhost:4005/events")
+			.get("http://event-bus-srv:4005/events")
 			.catch((err) => console.log(err.message));
 
 		for (let event of res.data) {
