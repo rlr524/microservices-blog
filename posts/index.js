@@ -31,7 +31,7 @@ app.post("/posts", async (req, res) => {
 	 * @property: data.title: title *string
 	 */
 	await axios
-		.post("http://localhost:4005/events", {
+		.post("http://event-bus-srv:4005/events", {
 			type: "PostCreated",
 			data: {
 				id,
