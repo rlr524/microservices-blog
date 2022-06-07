@@ -1,0 +1,62 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+metadata:
+    name: microservices-blog
+deploy:
+    kubectl:
+        manifests:
+            - "./infra/k8s/*"
+build:
+    local:
+        concurrency: 1
+        useDockerCLI: false
+        push: false
+    artifacts:
+        - image: rlr524/msb-client
+          context: client
+          docker:
+              dockerfile: Dockerfile
+          sync:
+              manual:
+                  - src: "src/**/*.js"
+                    dest: .
+        - image: rlr524/msb-comments
+          context: comments
+          docker:
+              dockerfile: Dockerfile
+          sync:
+              manual:
+                  - src: "*.js"
+                    dest: .
+        - image: rlr524/msb-event-bus
+          context: event-bus
+          docker:
+              dockerfile: Dockerfile
+          sync:
+              manual:
+                  - src: "*.js"
+                    dest: .
+        - image: rlr524/msb-moderation
+          context: moderation
+          docker:
+              dockerfile: Dockerfile
+          sync:
+              manual:
+                  - src: "*.js"
+                    dest: .
+        - image: rlr524/msb-posts
+          context: posts
+          docker:
+              dockerfile: Dockerfile
+          sync:
+              manual:
+                  - src: "*.js"
+                    dest: .
+        - image: rlr524/msb-query
+          context: query
+          docker:
+              dockerfile: Dockerfile
+          sync:
+              manual:
+                  - src: "*.js"
+                    dest: .
